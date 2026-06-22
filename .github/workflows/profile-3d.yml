@@ -5,6 +5,9 @@ on:
     - cron: "0 18 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,11 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          # A PAT (Personal Access Token) with `repo` scope is required.
-          # Add it as a repository secret named TOKEN:
-          # Settings → Secrets and variables → Actions → New repository secret
-          token: ${{ secrets.TOKEN }}
 
       - name: Write settings.json
         run: |
@@ -52,5 +50,4 @@ jobs:
           git config user.email github-actions@github.com
           git add -A .
           git commit -m "Update 3D contribution graph" || exit 0
-          git remote set-url origin https://x-access-token:${{ secrets.TOKEN }}@github.com/FlanCat9961/FlanCat9961.git
-          git push origin HEAD:main --force
+          git push
